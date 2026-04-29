@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guess Game</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body{
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background: radial-gradient(circle at top, #1f1c2c, #928dab);
+}
+
+.container{
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(12px);
+    padding:30px;
+    border-radius:20px;
+    width:90%;
+    max-width:360px;
+    text-align:center;
+    color:#fff;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+}
+
+h2{
+    margin-bottom:10px;
+}
+
+p{
+    font-size:14px;
+    opacity:0.8;
+}
+
+input{
+    width:100%;
+    padding:12px;
+    margin:15px 0;
+    border:none;
+    border-radius:10px;
+    outline:none;
+    font-size:16px;
+}
+
+button{
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    margin-top:10px;
+    font-size:16px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.check{
+    background:#00c6ff;
+    color:#000;
+}
+
+.check:hover{
+    background:#00aee0;
+}
+
+.reload{
+    background:#ff7b7b;
+    color:#fff;
+}
+
+.reload:hover{
+    background:#e85c5c;
+}
+
+#message{
+    margin-top:15px;
+    font-weight:bold;
+}
+
+.success{
+    color:#00ffae;
+}
+
+.error{
+    color:#ff6b6b;
+}
+
+.info{
+    color:#ffd166;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>🎯 Guess The Number</h2>
+    <p>Enter a number between 1 and 10</p>
+
+    <input type="number" id="num" placeholder="Your guess...">
+    
+    <button class="check" onclick="guessNumber()">Check</button>
+    <button class="reload" onclick="newGame()">New Game 🔄</button>
+
+    <p id="message"></p>
+    <p id="attempts"></p>
+</div>
+
+<script>
+
+let randomNum = Math.ceil(Math.random() * 10);
+let attemptCount = 0;
+
+function guessNumber(){
+    let num = Number(document.getElementById("num").value);
+    let message = document.getElementById("message");
+    let attempts = document.getElementById("attempts");
+
+    if(!num || num < 1 || num > 10){
+        message.innerHTML = "⚠️ Enter a valid number (1-10)";
+        message.className = "error";
+        return;
+    }
+
+    attemptCount++;
+
+    if(num === randomNum){
+        message.innerHTML = "🎉 Correct! You nailed it!";
+        message.className = "success";
+    }
+    else if(num > randomNum){
+        message.innerHTML = "📉 Too high!";
+        message.className = "info";
+    }
+    else{
+        message.innerHTML = "📈 Too low!";
+        message.className = "info";
+    }
+
+    attempts.innerHTML = "Attempts: " + attemptCount;
+}
+
+function newGame(){
+    randomNum = Math.ceil(Math.random() * 10);
+    attemptCount = 0;
+
+    document.getElementById("num").value = "";
+    document.getElementById("message").innerHTML = "";
+    document.getElementById("attempts").innerHTML = "";
+
+    document.getElementById("num").focus();
+}
+
+// ENTER key support
+document.getElementById("num").addEventListener("keypress", function(e){
+    if(e.key === "Enter"){
+        guessNumber();
+    }
+});
+
+</script>
+
+</body>
+</html>
